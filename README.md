@@ -16,9 +16,9 @@ Registrar o histórico de desenvolvimento no GitHub em um projeto privado. Compa
 
 ## Diferenciais
 
-Testes automatizados
-Autenticação dos usuários
-Posicionamento personalizado das assinaturas
+- Testes automatizados
+- Autenticação dos usuários
+- Posicionamento personalizado das assinaturas
 
 
 ### Deadline: 03/08/2021
