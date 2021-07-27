@@ -3,7 +3,9 @@
 ## Stack
 
 Backend: Laravel 6x ou superior
+
 Frontend: Vue 2
+
 DB: Livre
 
 
