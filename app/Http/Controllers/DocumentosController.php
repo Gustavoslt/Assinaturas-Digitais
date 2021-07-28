@@ -36,6 +36,7 @@ class DocumentosController extends Controller
      */
     public function store(Request $request)
     {
+        $request['status'] = 'Criado';
         $documento = Documento::create($request->post());
         return response()->json([
             'message'=>'Documento criado com sucesso!!',

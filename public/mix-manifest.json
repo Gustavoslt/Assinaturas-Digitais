@@ -1,4 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/js/resource/js/components/welcome.js": "/js/resource/js/components/welcome.js",
+    "/css/app.css": "/css/app.css",
+    "/js/resource/js/components/documentos/list.js": "/js/resource/js/components/documentos/list.js",
+    "/js/resource/js/components/documentos/add.js": "/js/resource/js/components/documentos/add.js",
+    "/js/resource/js/components/documentos/edit.js": "/js/resource/js/components/documentos/edit.js"
 }
