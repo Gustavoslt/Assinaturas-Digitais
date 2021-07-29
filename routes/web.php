@@ -11,14 +11,17 @@
 |
 */
 
+Route::get('assinatura','AssinaturasController@index');
+Route::post('assinatura','AssinaturasController@upload')->name('assinatura.upload');
+
 Route::get('{any}', function () {
     return view('app');
 })->where('any', '.*');
 
-// Route::get('/', function () {
-//     return view('welcome');
+// Route::get('/assinatura', function () {
+//     return view('assinatura');
 // });
 
 // Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
+
