@@ -1965,19 +1965,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "routes": () => (/* binding */ routes)
 /* harmony export */ });
 var Welcome = function Welcome() {
-  return __webpack_require__.e(/*! import() | resource/js/components/welcome */ "resource/js/components/welcome").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Welcome.vue */ "./resources/js/components/Welcome.vue"));
+  return __webpack_require__.e(/*! import() */ "resources_js_components_Welcome_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/Welcome.vue */ "./resources/js/components/Welcome.vue"));
 };
 
 var DocumentoList = function DocumentoList() {
-  return __webpack_require__.e(/*! import() | resource/js/components/documentos/list */ "resource/js/components/documentos/list").then(__webpack_require__.bind(__webpack_require__, /*! ./components/documentos/List.vue */ "./resources/js/components/documentos/List.vue"));
+  return __webpack_require__.e(/*! import() */ "resources_js_components_documentos_List_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/documentos/List.vue */ "./resources/js/components/documentos/List.vue"));
 };
 
 var DocumentoCreate = function DocumentoCreate() {
-  return __webpack_require__.e(/*! import() | resource/js/components/documentos/add */ "resource/js/components/documentos/add").then(__webpack_require__.bind(__webpack_require__, /*! ./components/documentos/Add.vue */ "./resources/js/components/documentos/Add.vue"));
+  return __webpack_require__.e(/*! import() */ "resources_js_components_documentos_Add_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/documentos/Add.vue */ "./resources/js/components/documentos/Add.vue"));
 };
 
 var DocumentoEdit = function DocumentoEdit() {
-  return __webpack_require__.e(/*! import() | resource/js/components/documentos/edit */ "resource/js/components/documentos/edit").then(__webpack_require__.bind(__webpack_require__, /*! ./components/documentos/Edit.vue */ "./resources/js/components/documentos/Edit.vue"));
+  return __webpack_require__.e(/*! import() */ "resources_js_components_documentos_Edit_vue").then(__webpack_require__.bind(__webpack_require__, /*! ./components/documentos/Edit.vue */ "./resources/js/components/documentos/Edit.vue"));
 };
 
 var routes = [{
@@ -52959,7 +52959,7 @@ Vue.compile = compileToFunctions;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resource/js/components/welcome":1,"resource/js/components/documentos/list":1,"resource/js/components/documentos/add":1,"resource/js/components/documentos/edit":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_components_Welcome_vue":1,"resources_js_components_documentos_List_vue":1,"resources_js_components_documentos_Add_vue":1,"resources_js_components_documentos_Edit_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

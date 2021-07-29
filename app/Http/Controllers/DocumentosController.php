@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Documento;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class DocumentosController extends Controller
 {
@@ -19,16 +20,6 @@ class DocumentosController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -36,34 +27,17 @@ class DocumentosController extends Controller
      */
     public function store(Request $request)
     {
+        $fileName = time().'.'.$request->documento->getClientOriginalExtension();
+        $request->documento->move(public_path('upload'), $fileName);
+        
         $request['status'] = 'Criado';
+        $request['documento'] = $fileName;
+
         $documento = Documento::create($request->post());
         return response()->json([
             'message'=>'Documento criado com sucesso!!',
             'documento'=>$documento
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Documento  $documento
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Documento $documento)
-    {
-        return response()->json($documento);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Documento  $documento
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Documento $documento)
-    {
-        //
     }
 
     /**
@@ -75,6 +49,15 @@ class DocumentosController extends Controller
      */
     public function update(Request $request, Documento $documento)
     {
+        $fileName = time().'.'.$request->documento->getClientOriginalExtension();
+        $request->documento->move(public_path('upload'), $fileName);
+        
+        $request['documento'] = $fileName;
+
+        if(File::exists(public_path('upload/'.$documento->documento))){
+            File::delete(public_path('upload/'.$documento->documento));
+        }
+
         $documento->fill($request->post())->save();
         return response()->json([
             'message'=>'Documento atualizado com sucesso!!',
@@ -90,6 +73,10 @@ class DocumentosController extends Controller
      */
     public function destroy(Documento $documento)
     {
+        if(File::exists(public_path('upload/'.$documento->documento))){
+            File::delete(public_path('upload/'.$documento->documento));
+        }
+
         $documento->delete();
         return response()->json([
             'message'=>'Documento deletado com sucesso!!'

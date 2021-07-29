@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resource/js/components/documentos/list"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_components_documentos_List_vue"],{
 
 /***/ "./node_modules/@babel/runtime/regenerator/index.js":
 /*!**********************************************************!*\

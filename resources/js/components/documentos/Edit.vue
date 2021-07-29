@@ -42,18 +42,20 @@ export default {
     name:"update-documento",
     data(){
         return {
-            documento:{
-                nome:"",
-                assinante:"",
-                documento:"",
-                _method:"patch"
-            }
+            nome:'',
+            assinante:'',
+            documento:'',
+            _method:"patch"
         }
     },
     mounted(){
         this.showDocumento()
     },
     methods:{
+        onFileChange(e){
+            console.log(e.target.files[0]);
+            this.documento = e.target.files[0];
+        },
         async showDocumento(){
             await this.axios.get(`/api/documento/${this.$route.params.id}`).then(response=>{
                 const { nome, assinante, documento } = response.data

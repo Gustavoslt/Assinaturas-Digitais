@@ -26,6 +26,8 @@
                                     <td>{{ documento.status }}</td>
                                     <td>
                                         <router-link :to='{name:"documentoEdit",params:{id:documento.id}}' class="btn btn-success">Editar</router-link>
+                                        <button type="button" class="btn btn-info">Assinar</button>
+                                        <button type="button" class="btn btn-danger">Baixar</button>
                                         <button type="button" @click="deleteDocumento(documento.id)" class="btn btn-danger">Excluir</button>
                                     </td>
                                 </tr>
