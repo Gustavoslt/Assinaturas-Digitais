@@ -38,7 +38,17 @@ class AssinaturasController extends Controller
         $image_base64 = base64_decode($image_parts[1]);
            
         $file = $folderPath . $id . '.'.$image_type;
-        file_put_contents($file, $image_base64);
-        return back()->with('success', 'A assinatura foi salva com sucesso!');
+
+        if(file_put_contents($file, $image_base64)) {
+            $documento = Documento::get()->where('id', $id)->first();
+            $status = 'Assinado';
+            $documento->update(array('status' => $status));
+        
+            return redirect('/documento')->with('success', 'A assinatura foi salva com sucesso!');
+        }
+        else {
+            return back()->with('error', 'Ocorreu um erro ao salvar a assinatura');
+        }
+
     }
 }
