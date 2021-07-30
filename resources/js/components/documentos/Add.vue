@@ -65,7 +65,7 @@ export default {
 
             axios.post('/api/documento', formData, config)
             .then(function (response) {
-                this.$router.push({name:"documentoList"})
+                window.location.href = '/documento';
             })
             .catch(function (error) {
                 console.log(error);

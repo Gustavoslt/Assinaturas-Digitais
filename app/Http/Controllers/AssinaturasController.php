@@ -1,27 +1,31 @@
 <?php
   
 namespace App\Http\Controllers;
-  
+
+use App\Models\Documento;
 use Illuminate\Http\Request;
   
 class AssinaturasController extends Controller
 {
     /**
-     * Write code on Method
+     * Display a signing pad with data from Documento
      *
      * @return response()
      */
-    public function index()
+    public function index($id)
     {
-        return view('assinatura');
+        $documento = Documento::get()->where('id', $id)->first();
+        $nome_documento = $documento->nome;
+        $nome_assinante = $documento->assinante;
+        return view('assinatura', compact('nome_documento', 'nome_assinante', 'id'));
     }
   
     /**
-     * Write code on Method
+     * Upload file on storage
      *
      * @return response()
      */
-    public function upload(Request $request)
+    public function upload(Request $request, $id)
     {
         $folderPath = public_path('upload/');
         
@@ -33,7 +37,7 @@ class AssinaturasController extends Controller
            
         $image_base64 = base64_decode($image_parts[1]);
            
-        $file = $folderPath . uniqid() . '.'.$image_type;
+        $file = $folderPath . $id . '.'.$image_type;
         file_put_contents($file, $image_base64);
         return back()->with('success', 'A assinatura foi salva com sucesso!');
     }

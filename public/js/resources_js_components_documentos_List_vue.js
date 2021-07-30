@@ -122,6 +122,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           console.log(error);
         });
       }
+    },
+    signDocumento: function signDocumento(id) {
+      window.location.href = '/assinatura/' + id;
+    },
+    downloadDocumento: function downloadDocumento(id) {
+      window.location.href = '/download/' + id;
     }
   }
 });
@@ -1023,7 +1029,7 @@ var render = function() {
                             _c(
                               "router-link",
                               {
-                                staticClass: "btn btn-success",
+                                staticClass: "btn btn-warning",
                                 attrs: {
                                   to: {
                                     name: "documentoEdit",
@@ -1037,8 +1043,13 @@ var render = function() {
                             _c(
                               "button",
                               {
-                                staticClass: "btn btn-info",
-                                attrs: { type: "button" }
+                                staticClass: "btn btn-success",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.signDocumento(documento.id)
+                                  }
+                                }
                               },
                               [_vm._v("Assinar")]
                             ),
@@ -1046,8 +1057,13 @@ var render = function() {
                             _c(
                               "button",
                               {
-                                staticClass: "btn btn-danger",
-                                attrs: { type: "button" }
+                                staticClass: "btn btn-info",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.downloadDocumento(documento.id)
+                                  }
+                                }
                               },
                               [_vm._v("Baixar")]
                             ),

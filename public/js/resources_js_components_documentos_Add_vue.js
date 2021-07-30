@@ -75,9 +75,7 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('assinante', this.assinante);
       formData.append('documento', this.documento);
       axios.post('/api/documento', formData, config).then(function (response) {
-        this.$router.push({
-          name: "documentoList"
-        });
+        window.location.href = '/documento';
       })["catch"](function (error) {
         console.log(error);
       });

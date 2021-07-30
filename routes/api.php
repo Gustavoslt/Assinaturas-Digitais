@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::resource('documento', DocumentosController::class)->only(['index','store','show','update','destroy']);
+Route::resource('documento', DocumentosController::class)->only(['index','store','show','update','destroy','download']);
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();

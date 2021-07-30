@@ -25,9 +25,9 @@
                                     <td>{{ documento.assinante }}</td>
                                     <td>{{ documento.status }}</td>
                                     <td>
-                                        <router-link :to='{name:"documentoEdit",params:{id:documento.id}}' class="btn btn-success">Editar</router-link>
-                                        <button type="button" class="btn btn-info">Assinar</button>
-                                        <button type="button" class="btn btn-danger">Baixar</button>
+                                        <router-link :to='{name:"documentoEdit",params:{id:documento.id}}' class="btn btn-warning">Editar</router-link>
+                                        <button type="button" @click="signDocumento(documento.id)" class="btn btn-success">Assinar</button>
+                                        <button type="button" @click="downloadDocumento(documento.id)" class="btn btn-info">Baixar</button>
                                         <button type="button" @click="deleteDocumento(documento.id)" class="btn btn-danger">Excluir</button>
                                     </td>
                                 </tr>
@@ -73,6 +73,12 @@ export default {
                     console.log(error)
                 })
             }
+        },
+        signDocumento(id){
+            window.location.href = '/assinatura/' + id;
+        },
+        downloadDocumento(id){
+            window.location.href = '/download/' + id;
         }
     }
 }

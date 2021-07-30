@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Documento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class DocumentosController extends Controller
 {
+    public function __construct(Documento $documento)
+    {
+        $this->documento = $documento;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,7 @@ class DocumentosController extends Controller
      */
     public function index()
     {
-        $documento = Documento::all(['id', 'nome', 'assinante', 'status', 'documento']);
+        $documento = $this->documento->all();
         return response()->json($documento);
     }
 
@@ -33,7 +39,7 @@ class DocumentosController extends Controller
         $request['status'] = 'Criado';
         $request['documento'] = $fileName;
 
-        $documento = Documento::create($request->post());
+        $documento = $this->documento->create($request->post());
         return response()->json([
             'message'=>'Documento criado com sucesso!!',
             'documento'=>$documento
@@ -82,4 +88,20 @@ class DocumentosController extends Controller
             'message'=>'Documento deletado com sucesso!!'
         ]);
     }
+
+    /**
+     * Download file from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function download($id)
+    {
+		$anexo = $this->documento->findOrFail($id);
+		$file_path = 'upload/'.$anexo->documento;
+
+        $arquivo = public_path($file_path);
+        
+        return Response::download($arquivo);
+	}
 }

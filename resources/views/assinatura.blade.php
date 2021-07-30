@@ -6,8 +6,8 @@
        <div class="col-md-6 offset-md-3 mt-5">
            <div class="card">
                <div class="card-header">
-                   <h4>Assinatura do documento: </h4>
-                   <h5>por: </h5>
+                   <h4>Documento: {{$nome_documento}}</h4>
+                   <h5>Assinado por: {{$nome_assinante}}</h5>
                </div>
                <div class="card-body">
                     @if ($message = Session::get('success'))
@@ -16,19 +16,15 @@
                             <strong>{{ $message }}</strong>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('assinatura.upload') }}">
+                    <form method="POST" action="{{ route('assinatura.upload', $id) }}">
                         @csrf
                         <div class="col-md-12">
                             <label class="" for="">Assine aqui:</label>
                             <br/>
-                            <div id="ass" ></div>
+                            <div id="sig" ></div>
                             <br/>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button id="limpar" class="btn btn-danger btn-sm">Limpar</button>
-                                </div>
-                            </div>
-                            <textarea id="assinatura" name="assinatura" style="display: none"></textarea>
+                            <button id="limpar" class="btn btn-danger btn-sm">Limpar</button>
+                            <textarea id="assinatura" name="signed" style="display: none"></textarea>
                         </div>
                         <br/>
                         <button class="btn btn-success">Salvar</button>
@@ -40,12 +36,11 @@
 </div>
 
 <script type="text/javascript">
-    var assinatura = $('#ass').signature({syncField: '#assinatura', syncFormat: 'PNG'});
+    var sig = $('#sig').signature({syncField: '#assinatura', syncFormat: 'PNG'});
     $('#limpar').click(function(e) {
         e.preventDefault();
-        assinatura.signature('clear');
+        sig.signature('clear');
         $("#assinatura").val('');
     });
 </script>
-
 @endsection
