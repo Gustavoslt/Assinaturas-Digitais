@@ -52,7 +52,7 @@
             <div style="position:absolute;left:332.01px;top:440.62px" class="cls_006">
                 <span class="cls_006">Poços de Caldas, <u>{{$dia ?? '____'}}</u> de <u>{{$mes ?? '____________'}}</u> de 2021.</span>
             </div>
-            <div style="position:absolute;left:180.00px;top:520.0px" class="cls_006">
+            <div style="position:absolute;left:160.00px;top:520.0px" class="cls_006">
                 <img src={{ public_path('upload/'.$assinatura) }} width="300px" alt="">
             </div>
             <div style="position:absolute;left:171.09px;top:617.41px" class="cls_006">

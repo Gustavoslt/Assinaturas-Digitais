@@ -11,6 +11,9 @@ class Documento extends Model
     protected $fillable = [
         'nome',
         'assinante',
+        'cpf',
+        'num_inscricao',
+        'assinatura',
         'status',
         'documento'
     ];

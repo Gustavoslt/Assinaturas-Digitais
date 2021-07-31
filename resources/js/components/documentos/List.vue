@@ -78,7 +78,7 @@ export default {
             window.location.href = '/assinatura/' + id;
         },
         downloadDocumento(id){
-            window.location.href = '/download/' + id;
+            window.location.href = '/gerar-pdf/' + id;
         }
     }
 }

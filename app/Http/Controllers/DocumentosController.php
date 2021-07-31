@@ -116,18 +116,24 @@ class DocumentosController extends Controller
     {
         $documento = $this->documento->findOrFail($id);
 
-        $data = [
-            'nome_assinante' => $documento->assinante,
-            'cpf' => $documento->cpf,
-            'num_inscricao' => $documento->num_inscricao,
-            'edital' => '2983-',
-            'dia' => date('d'),
-            'mes' => date('F'),
-            'assinatura' => $documento->assinatura,
-        ];
-
-        $pdf = PDF::loadView('pdf', $data);
-  
-        return $pdf->download('documento.pdf');
+        if($documento->assinatura != null){
+            $data = [
+                'nome_assinante' => $documento->assinante,
+                'cpf' => $documento->cpf,
+                'num_inscricao' => $documento->num_inscricao,
+                'edital' => '2983-',
+                'dia' => date('d'),
+                'mes' => date('F'),
+                'assinatura' => $documento->assinatura,
+            ];
+    
+            $pdf = PDF::loadView('pdf', $data);
+      
+            return $pdf->download('documento.pdf');
+        }
+        else{
+            return abort(403, "O documento ainda não foi assinado!");
+        }
+        
     }
 }

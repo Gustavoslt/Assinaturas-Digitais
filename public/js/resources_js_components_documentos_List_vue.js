@@ -127,7 +127,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       window.location.href = '/assinatura/' + id;
     },
     downloadDocumento: function downloadDocumento(id) {
-      window.location.href = '/download/' + id;
+      window.location.href = '/gerar-pdf/' + id;
     }
   }
 });

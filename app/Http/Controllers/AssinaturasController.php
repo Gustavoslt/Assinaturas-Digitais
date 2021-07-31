@@ -41,8 +41,13 @@ class AssinaturasController extends Controller
 
         if(file_put_contents($file, $image_base64)) {
             $documento = Documento::get()->where('id', $id)->first();
-            $status = 'Assinado';
-            $documento->update(array('status' => $status));
+
+            $formData = [
+                'status' => 'Assinado',
+                'assinatura' => $id.'.png',
+            ];
+
+            $documento->update($formData);
         
             return redirect('/documento')->with('success', 'A assinatura foi salva com sucesso!');
         }
