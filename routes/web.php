@@ -14,6 +14,7 @@
 Route::get('assinatura/{id}','AssinaturasController@index')->name('assinatura');
 Route::post('assinatura/{id}','AssinaturasController@upload')->name('assinatura.upload');
 Route::get('download/{id}','DocumentosController@download');
+Route::get('gerar-pdf/{id}','DocumentosController@geraPDF');
 
 Route::get('{any}', function () {
     return view('app');

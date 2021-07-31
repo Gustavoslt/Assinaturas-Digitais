@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Documento;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
@@ -104,4 +105,29 @@ class DocumentosController extends Controller
         
         return Response::download($arquivo);
 	}
+
+    /**
+     * Download file from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function geraPDF($id)
+    {
+        $documento = $this->documento->findOrFail($id);
+
+        $data = [
+            'nome_assinante' => $documento->assinante,
+            'cpf' => $documento->cpf,
+            'num_inscricao' => $documento->num_inscricao,
+            'edital' => '2983-',
+            'dia' => date('d'),
+            'mes' => date('F'),
+            'assinatura' => $documento->assinatura,
+        ];
+
+        $pdf = PDF::loadView('pdf', $data);
+  
+        return $pdf->download('documento.pdf');
+    }
 }
