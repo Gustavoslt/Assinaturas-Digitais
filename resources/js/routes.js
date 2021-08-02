@@ -1,7 +1,7 @@
-const Welcome = () => import('./components/Welcome.vue' /* webpackChunkName: "resource/js/components/welcome" */)
-const DocumentoList = () => import('./components/documentos/List.vue' /* webpackChunkName: "resource/js/components/documentos/list" */)
-const DocumentoCreate = () => import('./components/documentos/Add.vue' /* webpackChunkName: "resource/js/components/documentos/add" */)
-const DocumentoEdit = () => import('./components/documentos/Edit.vue' /* webpackChunkName: "resource/js/components/documentos/edit" */)
+const Welcome = () => import('./components/Welcome.vue')
+const DocumentoList = () => import('./components/documentos/List.vue')
+const DocumentoCreate = () => import('./components/documentos/Add.vue')
+const DocumentoEdit = () => import('./components/documentos/Edit.vue')
 
 export const routes = [
     {

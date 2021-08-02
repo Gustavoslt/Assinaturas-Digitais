@@ -17,8 +17,11 @@ class CreateDocumentosTable extends Migration
             $table->bigIncrements('id');
             $table->string('nome');
             $table->string('assinante');
+            $table->string('cpf')->unique();
+            $table->integer('num_inscricao');
+            $table->string('assinatura')->nullable();
+            $table->string('documento')->nullable();
             $table->string('status');
-            $table->string('documento');
             $table->timestamps();
         });
     }

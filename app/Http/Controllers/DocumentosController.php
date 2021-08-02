@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Documento;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class DocumentosController extends Controller
 {
+    public function __construct(Documento $documento)
+    {
+        $this->documento = $documento;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,18 +22,9 @@ class DocumentosController extends Controller
      */
     public function index()
     {
-        $documento = Documento::all(['id', 'nome', 'assinante', 'status', 'documento']);
-        return response()->json($documento);
-    }
+        $documento = $this->documento->all();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json($documento);
     }
 
     /**
@@ -36,34 +35,38 @@ class DocumentosController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->documento != null){
+            $fileName = time().'.'.$request->documento->getClientOriginalExtension();
+            $request->documento->move(public_path('upload'), $fileName);
+
+            $request['documento'] = $fileName;
+        }
         $request['status'] = 'Criado';
-        $documento = Documento::create($request->post());
-        return response()->json([
-            'message'=>'Documento criado com sucesso!!',
-            'documento'=>$documento
-        ]);
+
+        $documento = $this->documento->create($request->post());
+
+        if($documento){
+            return response()->json([
+                'message'=>'Documento criado com sucesso!!',
+                'documento'=>$documento
+            ]);
+        }
+        else {
+            return response()->json([
+                'error'=>'Ocorreu um erro ao criar o documento.',
+            ]);
+        } 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Documento  $documento
+     * @param  \App\Models\Documento  $category
      * @return \Illuminate\Http\Response
      */
     public function show(Documento $documento)
     {
         return response()->json($documento);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Documento  $documento
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Documento $documento)
-    {
-        //
     }
 
     /**
@@ -75,11 +78,19 @@ class DocumentosController extends Controller
      */
     public function update(Request $request, Documento $documento)
     {
-        $documento->fill($request->post())->save();
-        return response()->json([
-            'message'=>'Documento atualizado com sucesso!!',
-            'documento'=>$documento
-        ]);
+        $documento->update($request->all());
+
+        if($documento){
+            return response()->json([
+                'message'=>'Documento atualizado com sucesso!!',
+                'documento'=>$documento
+            ]);
+        }
+        else {
+            return response()->json([
+                'error'=>'Ocorreu um erro ao atualizar o documento.',
+            ]);
+        }
     }
 
     /**
@@ -90,9 +101,69 @@ class DocumentosController extends Controller
      */
     public function destroy(Documento $documento)
     {
-        $documento->delete();
-        return response()->json([
-            'message'=>'Documento deletado com sucesso!!'
-        ]);
+        if(File::exists(public_path('upload/'.$documento->documento))){
+            File::delete(public_path('upload/'.$documento->documento));
+        } 
+        if(File::exists(public_path('upload/'.$documento->assinatura))){
+            File::delete(public_path('upload/'.$documento->assinatura));
+        }
+
+        if($documento->delete()){
+            return response()->json([
+                'message'=>'Documento excluído com sucesso!!'
+            ]);
+        }
+        else {
+            return response()->json([
+                'error'=>'Ocorreu um erro ao excluir o documento'
+            ]);
+        }
+        
+    }
+
+    /**
+     * Download file from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function download($id)
+    {
+		$anexo = $this->documento->findOrFail($id);
+		$file_path = 'upload/'.$anexo->documento;
+
+        $arquivo = public_path($file_path);
+        
+        return Response::download($arquivo);
+	}
+
+    /**
+     * Generate PDF file with data from Documento.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function geraPDF($id)
+    {
+        $documento = $this->documento->findOrFail($id);
+        $assinatura = null;
+
+        if($documento->assinatura != null){
+            $assinatura =$documento->assinatura;   
+        }
+
+        $data = [
+            'nome_assinante' => $documento->assinante,
+            'cpf' => $documento->cpf,
+            'num_inscricao' => $documento->num_inscricao,
+            'edital' => '2983-',
+            'dia' => date('d'),
+            'mes' => date('F'),
+            'assinatura' => $assinatura,
+        ];
+
+        $pdf = PDF::loadView('pdf', $data);
+  
+        return $pdf->download('documento.pdf');
     }
 }

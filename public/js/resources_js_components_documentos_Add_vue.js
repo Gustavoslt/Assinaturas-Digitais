@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resource/js/components/documentos/add"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_components_documentos_Add_vue"],{
 
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/documentos/Add.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************************************!*\
@@ -50,11 +50,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       nome: '',
       assinante: '',
+      cpf: '',
+      num_inscricao: '',
       documento: ''
     };
   },
@@ -73,13 +87,25 @@ __webpack_require__.r(__webpack_exports__);
       var formData = new FormData();
       formData.append('nome', this.nome);
       formData.append('assinante', this.assinante);
+      formData.append('cpf', this.cpf);
+      formData.append('num_inscricao', this.num_inscricao);
       formData.append('documento', this.documento);
       axios.post('/api/documento', formData, config).then(function (response) {
-        this.$router.push({
-          name: "documentoList"
+        Swal.fire({
+          icon: 'success',
+          title: 'Documento criado com sucesso!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(function () {
+          window.location.href = '/documento';
         });
       })["catch"](function (error) {
-        console.log(error);
+        Swal.fire({
+          title: 'Erro!',
+          text: error.response.data.message,
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
       });
     }
   }
@@ -187,7 +213,7 @@ var render = function() {
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-12 mb-2" }, [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", [_vm._v("Nome")]),
+                    _c("label", [_vm._v("Nome do Documento")]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -235,6 +261,72 @@ var render = function() {
                             return
                           }
                           _vm.assinante = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 mb-2" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("CPF")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "mask",
+                          rawName: "v-mask",
+                          value: "###.###.###-##",
+                          expression: "'###.###.###-##'"
+                        },
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.cpf,
+                          expression: "cpf"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.cpf },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.cpf = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 mb-2" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Nº de Inscrição")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.num_inscricao,
+                          expression: "num_inscricao"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: {
+                        type: "text",
+                        oninput:
+                          "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');"
+                      },
+                      domProps: { value: _vm.num_inscricao },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.num_inscricao = $event.target.value
                         }
                       }
                     })

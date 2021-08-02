@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resource/js/components/documentos/list"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resources_js_components_documentos_List_vue"],{
 
 /***/ "./node_modules/@babel/runtime/regenerator/index.js":
 /*!**********************************************************!*\
@@ -77,6 +77,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "documentos",
   data: function data() {
@@ -100,7 +104,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.axios.get('/api/documento').then(function (response) {
                   _this.documentos = response.data;
                 })["catch"](function (error) {
-                  console.log(error);
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message
+                  });
                   _this.documentos = [];
                 });
 
@@ -115,13 +123,36 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteDocumento: function deleteDocumento(id) {
       var _this2 = this;
 
-      if (confirm("Tem certeza que deseja excluir esse documento?")) {
-        this.axios["delete"]("/api/documento/".concat(id)).then(function (response) {
-          _this2.getDocumentos();
-        })["catch"](function (error) {
-          console.log(error);
-        });
-      }
+      Swal.fire({
+        title: 'Tem certeza que deseja excluir?',
+        text: "Essa ação é irreversível!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim!',
+        cancelButtonText: 'Cancelar'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this2.axios["delete"]("/api/documento/".concat(id)).then(function (response) {
+            Swal.fire('Excluido!', 'O documento foi excluido com sucesso!', 'success');
+
+            _this2.getDocumentos();
+          })["catch"](function (error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: error.response.data.message
+            });
+          });
+        }
+      });
+    },
+    signDocumento: function signDocumento(id) {
+      window.location.href = '/assinatura/' + id;
+    },
+    downloadDocumento: function downloadDocumento(id) {
+      window.location.href = '/gerar-pdf/' + id;
     }
   }
 });
@@ -1015,6 +1046,10 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(documento.assinante))]),
                         _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(documento.cpf))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(documento.num_inscricao))]),
+                        _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(documento.status))]),
                         _vm._v(" "),
                         _c(
@@ -1023,7 +1058,7 @@ var render = function() {
                             _c(
                               "router-link",
                               {
-                                staticClass: "btn btn-success",
+                                staticClass: "btn btn-warning",
                                 attrs: {
                                   to: {
                                     name: "documentoEdit",
@@ -1037,8 +1072,13 @@ var render = function() {
                             _c(
                               "button",
                               {
-                                staticClass: "btn btn-info",
-                                attrs: { type: "button" }
+                                staticClass: "btn btn-success",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.signDocumento(documento.id)
+                                  }
+                                }
                               },
                               [_vm._v("Assinar")]
                             ),
@@ -1046,8 +1086,13 @@ var render = function() {
                             _c(
                               "button",
                               {
-                                staticClass: "btn btn-danger",
-                                attrs: { type: "button" }
+                                staticClass: "btn btn-info",
+                                attrs: { type: "button" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.downloadDocumento(documento.id)
+                                  }
+                                }
                               },
                               [_vm._v("Baixar")]
                             ),
@@ -1098,6 +1143,10 @@ var staticRenderFns = [
         _c("th", [_vm._v("Nome")]),
         _vm._v(" "),
         _c("th", [_vm._v("Assinante")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("CPF")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nº Inscrição")]),
         _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),
