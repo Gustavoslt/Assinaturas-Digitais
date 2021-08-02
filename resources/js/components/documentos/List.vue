@@ -15,6 +15,8 @@
                                 <tr>
                                     <th>Nome</th>
                                     <th>Assinante</th>
+                                    <th>CPF</th>
+                                    <th>Nº Inscrição</th>
                                     <th>Status</th>
                                     <th>Opções</th>
                                 </tr>
@@ -23,6 +25,8 @@
                                 <tr v-for="(documento,key) in documentos" :key="key">
                                     <td>{{ documento.nome }}</td>
                                     <td>{{ documento.assinante }}</td>
+                                    <td>{{ documento.cpf }}</td>
+                                    <td>{{ documento.num_inscricao }}</td>
                                     <td>{{ documento.status }}</td>
                                     <td>
                                         <router-link :to='{name:"documentoEdit",params:{id:documento.id}}' class="btn btn-warning">Editar</router-link>
@@ -66,13 +70,33 @@ export default {
             })
         },
         deleteDocumento(id){
-            if(confirm("Tem certeza que deseja excluir esse documento?")){
-                this.axios.delete(`/api/documento/${id}`).then(response=>{
-                    this.getDocumentos()
-                }).catch(error=>{
-                    console.log(error)
-                })
-            }
+            Swal.fire({
+                title: 'Tem certeza que deseja excluir?',
+                text: "Essa ação é irreversível!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.axios.delete(`/api/documento/${id}`).then(response=>{
+                        Swal.fire(
+                            'Excluido!',
+                            'O documento foi excluido com sucesso!',
+                            'success'
+                        )
+                        this.getDocumentos()
+                    }).catch(error=>{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: error
+                        })
+                    })
+                }
+            })
         },
         signDocumento(id){
             window.location.href = '/assinatura/' + id;
