@@ -110,7 +110,7 @@ class DocumentosController extends Controller
 
         if($documento->delete()){
             return response()->json([
-                'message'=>'Documento excluir com sucesso!!'
+                'message'=>'Documento excluído com sucesso!!'
             ]);
         }
         else {
@@ -138,7 +138,7 @@ class DocumentosController extends Controller
 	}
 
     /**
-     * Download file from storage.
+     * Generate PDF file with data from Documento.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

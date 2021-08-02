@@ -90,10 +90,10 @@ export default {
                     window.location.href = '/documento';
                 })
             })
-            .catch(function (error) {
+            .catch(error=>{
                 Swal.fire({
                     title: 'Erro!',
-                    text: error,
+                    text: error.response.data.message,
                     icon: 'error',
                     confirmButtonText: 'Ok'
                 })

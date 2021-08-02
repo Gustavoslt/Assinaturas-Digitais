@@ -53,12 +53,14 @@
 export default {
     data(){
         return {
-            documento:{nome:'',
-            assinante:'',
-            cpf:'',
-            num_inscricao:'',
-            documento:'',
-            _method:"patch"}
+            documento:{
+                nome:'',
+                assinante:'',
+                cpf:'',
+                num_inscricao:'',
+                documento:'',
+                _method:"patch"
+            }
         }
     },
     mounted(){
@@ -81,7 +83,7 @@ export default {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: error
+                    text: error.response.data.message
                 })
             })
         },
@@ -112,7 +114,7 @@ export default {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: error
+                    text: error.response.data.message,
                 })
             })
         }

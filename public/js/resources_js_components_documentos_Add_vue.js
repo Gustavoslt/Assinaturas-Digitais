@@ -102,7 +102,7 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (error) {
         Swal.fire({
           title: 'Erro!',
-          text: error,
+          text: error.response.data.message,
           icon: 'error',
           confirmButtonText: 'Ok'
         });

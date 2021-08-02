@@ -127,7 +127,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: error
+                    text: error.response.data.message
                   });
                 });
 
@@ -169,7 +169,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: error
+          text: error.response.data.message
         });
       });
     }

@@ -104,7 +104,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this.axios.get('/api/documento').then(function (response) {
                   _this.documentos = response.data;
                 })["catch"](function (error) {
-                  console.log(error);
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error.response.data.message
+                  });
                   _this.documentos = [];
                 });
 
@@ -138,7 +142,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             Swal.fire({
               icon: 'error',
               title: 'Oops...',
-              text: error
+              text: error.response.data.message
             });
           });
         }
