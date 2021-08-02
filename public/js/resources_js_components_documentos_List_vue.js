@@ -77,6 +77,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "documentos",
   data: function data() {
@@ -115,13 +119,30 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     deleteDocumento: function deleteDocumento(id) {
       var _this2 = this;
 
-      if (confirm("Tem certeza que deseja excluir esse documento?")) {
-        this.axios["delete"]("/api/documento/".concat(id)).then(function (response) {
-          _this2.getDocumentos();
-        })["catch"](function (error) {
-          console.log(error);
-        });
-      }
+      Swal.fire({
+        title: 'Tem certeza que deseja excluir?',
+        text: "Essa ação é irreversível!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim!',
+        cancelButtonText: 'Cancelar'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this2.axios["delete"]("/api/documento/".concat(id)).then(function (response) {
+            Swal.fire('Excluido!', 'O documento foi excluido com sucesso!', 'success');
+
+            _this2.getDocumentos();
+          })["catch"](function (error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: error
+            });
+          });
+        }
+      });
     },
     signDocumento: function signDocumento(id) {
       window.location.href = '/assinatura/' + id;
@@ -1021,6 +1042,10 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(documento.assinante))]),
                         _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(documento.cpf))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(documento.num_inscricao))]),
+                        _vm._v(" "),
                         _c("td", [_vm._v(_vm._s(documento.status))]),
                         _vm._v(" "),
                         _c(
@@ -1114,6 +1139,10 @@ var staticRenderFns = [
         _c("th", [_vm._v("Nome")]),
         _vm._v(" "),
         _c("th", [_vm._v("Assinante")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("CPF")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nº Inscrição")]),
         _vm._v(" "),
         _c("th", [_vm._v("Status")]),
         _vm._v(" "),

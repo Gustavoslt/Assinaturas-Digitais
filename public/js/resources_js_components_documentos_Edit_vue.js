@@ -69,14 +69,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "update-documento",
   data: function data() {
     return {
-      nome: '',
-      assinante: '',
-      documento: '',
-      _method: "patch"
+      documento: {
+        nome: '',
+        assinante: '',
+        cpf: '',
+        num_inscricao: '',
+        documento: '',
+        _method: "patch"
+      }
     };
   },
   mounted: function mounted() {
@@ -85,7 +100,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   methods: {
     onFileChange: function onFileChange(e) {
       console.log(e.target.files[0]);
-      this.documento = e.target.files[0];
+      this.documento.documento = e.target.files[0];
     },
     showDocumento: function showDocumento() {
       var _this = this;
@@ -100,12 +115,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   var _response$data = response.data,
                       nome = _response$data.nome,
                       assinante = _response$data.assinante,
+                      cpf = _response$data.cpf,
+                      num_inscricao = _response$data.num_inscricao,
                       documento = _response$data.documento;
                   _this.documento.nome = nome;
                   _this.documento.assinante = assinante;
+                  _this.documento.cpf = cpf;
+                  _this.documento.num_inscricao = num_inscricao;
                   _this.documento.documento = documento;
                 })["catch"](function (error) {
-                  console.log(error);
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: error
+                  });
                 });
 
               case 2:
@@ -116,30 +139,39 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    update: function update() {
+    updateDocumento: function updateDocumento(e) {
       var _this2 = this;
 
-      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return _this2.axios.post("/api/documento/".concat(_this2.$route.params.id), _this2.documento).then(function (response) {
-                  _this2.$router.push({
-                    name: "documentoList"
-                  });
-                })["catch"](function (error) {
-                  console.log(error);
-                });
-
-              case 2:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2);
-      }))();
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
+      var formData = new FormData(e.target);
+      formData.append('nome', this.documento.nome);
+      formData.append('assinante', this.documento.assinante);
+      formData.append('cpf', this.documento.cpf);
+      formData.append('num_inscricao', this.documento.num_inscricao);
+      formData.append('documento', this.documento.documento);
+      formData.append('_method', 'PATCH');
+      axios.post("/api/documento/".concat(this.$route.params.id), formData, config).then(function (response) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Documento editado com sucesso!',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(function () {
+          _this2.$router.push({
+            name: "documentoList"
+          });
+        });
+      })["catch"](function (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error
+        });
+      });
     }
   }
 });
@@ -1010,7 +1042,7 @@ var render = function() {
               on: {
                 submit: function($event) {
                   $event.preventDefault()
-                  return _vm.update.apply(null, arguments)
+                  return _vm.updateDocumento.apply(null, arguments)
                 }
               }
             },
@@ -1018,7 +1050,7 @@ var render = function() {
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-12 mb-2" }, [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", [_vm._v("Nome")]),
+                    _c("label", [_vm._v("Nome do Documento")]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
@@ -1078,20 +1110,58 @@ var render = function() {
                 _vm._v(" "),
                 _c("div", { staticClass: "col-12 mb-2" }, [
                   _c("div", { staticClass: "form-group" }, [
-                    _c("label", [_vm._v("Documento")]),
+                    _c("label", [_vm._v("CPF")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "mask",
+                          rawName: "v-mask",
+                          value: "###.###.###-##",
+                          expression: "'###.###.###-##'"
+                        },
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.documento.cpf,
+                          expression: "documento.cpf"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.documento.cpf },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.documento, "cpf", $event.target.value)
+                        }
+                      }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 mb-2" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Nº de Inscrição")]),
                     _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.documento.documento,
-                          expression: "documento.documento"
+                          value: _vm.documento.num_inscricao,
+                          expression: "documento.num_inscricao"
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
-                      domProps: { value: _vm.documento.documento },
+                      attrs: {
+                        type: "text",
+                        oninput:
+                          "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');"
+                      },
+                      domProps: { value: _vm.documento.num_inscricao },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
@@ -1099,11 +1169,23 @@ var render = function() {
                           }
                           _vm.$set(
                             _vm.documento,
-                            "documento",
+                            "num_inscricao",
                             $event.target.value
                           )
                         }
                       }
+                    })
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-12 mb-2" }, [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Documento")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      ref: "documento",
+                      attrs: { type: "file", id: "documento" },
+                      on: { change: _vm.onFileChange }
                     })
                   ])
                 ]),

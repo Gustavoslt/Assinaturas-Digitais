@@ -23,6 +23,7 @@ class DocumentosController extends Controller
     public function index()
     {
         $documento = $this->documento->all();
+
         return response()->json($documento);
     }
 
@@ -34,17 +35,31 @@ class DocumentosController extends Controller
      */
     public function store(Request $request)
     {
-        $fileName = time().'.'.$request->documento->getClientOriginalExtension();
-        $request->documento->move(public_path('upload'), $fileName);
-        
+        if($request->documento != null){
+            $fileName = time().'.'.$request->documento->getClientOriginalExtension();
+            $request->documento->move(public_path('upload'), $fileName);
+
+            $request['documento'] = $fileName;
+        }
         $request['status'] = 'Criado';
-        $request['documento'] = $fileName;
 
         $documento = $this->documento->create($request->post());
+
         return response()->json([
             'message'=>'Documento criado com sucesso!!',
             'documento'=>$documento
         ]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Documento  $category
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Documento $documento)
+    {
+        return response()->json($documento);
     }
 
     /**
@@ -56,16 +71,8 @@ class DocumentosController extends Controller
      */
     public function update(Request $request, Documento $documento)
     {
-        $fileName = time().'.'.$request->documento->getClientOriginalExtension();
-        $request->documento->move(public_path('upload'), $fileName);
-        
-        $request['documento'] = $fileName;
+        $documento->update($request->all());
 
-        if(File::exists(public_path('upload/'.$documento->documento))){
-            File::delete(public_path('upload/'.$documento->documento));
-        }
-
-        $documento->fill($request->post())->save();
         return response()->json([
             'message'=>'Documento atualizado com sucesso!!',
             'documento'=>$documento
@@ -82,9 +89,13 @@ class DocumentosController extends Controller
     {
         if(File::exists(public_path('upload/'.$documento->documento))){
             File::delete(public_path('upload/'.$documento->documento));
+        } 
+        if(File::exists(public_path('upload/'.$documento->assinatura))){
+            File::delete(public_path('upload/'.$documento->assinatura));
         }
 
         $documento->delete();
+
         return response()->json([
             'message'=>'Documento deletado com sucesso!!'
         ]);
@@ -115,25 +126,24 @@ class DocumentosController extends Controller
     public function geraPDF($id)
     {
         $documento = $this->documento->findOrFail($id);
+        $assinatura = null;
 
         if($documento->assinatura != null){
-            $data = [
-                'nome_assinante' => $documento->assinante,
-                'cpf' => $documento->cpf,
-                'num_inscricao' => $documento->num_inscricao,
-                'edital' => '2983-',
-                'dia' => date('d'),
-                'mes' => date('F'),
-                'assinatura' => $documento->assinatura,
-            ];
-    
-            $pdf = PDF::loadView('pdf', $data);
-      
-            return $pdf->download('documento.pdf');
+            $assinatura =$documento->assinatura;   
         }
-        else{
-            return abort(403, "O documento ainda não foi assinado!");
-        }
-        
+
+        $data = [
+            'nome_assinante' => $documento->assinante,
+            'cpf' => $documento->cpf,
+            'num_inscricao' => $documento->num_inscricao,
+            'edital' => '2983-',
+            'dia' => date('d'),
+            'mes' => date('F'),
+            'assinatura' => $assinatura,
+        ];
+
+        $pdf = PDF::loadView('pdf', $data);
+  
+        return $pdf->download('documento.pdf');
     }
 }
