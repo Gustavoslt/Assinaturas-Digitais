@@ -45,10 +45,17 @@ class DocumentosController extends Controller
 
         $documento = $this->documento->create($request->post());
 
-        return response()->json([
-            'message'=>'Documento criado com sucesso!!',
-            'documento'=>$documento
-        ]);
+        if($documento){
+            return response()->json([
+                'message'=>'Documento criado com sucesso!!',
+                'documento'=>$documento
+            ]);
+        }
+        else {
+            return response()->json([
+                'error'=>'Ocorreu um erro ao criar o documento.',
+            ]);
+        } 
     }
 
     /**
@@ -73,10 +80,17 @@ class DocumentosController extends Controller
     {
         $documento->update($request->all());
 
-        return response()->json([
-            'message'=>'Documento atualizado com sucesso!!',
-            'documento'=>$documento
-        ]);
+        if($documento){
+            return response()->json([
+                'message'=>'Documento atualizado com sucesso!!',
+                'documento'=>$documento
+            ]);
+        }
+        else {
+            return response()->json([
+                'error'=>'Ocorreu um erro ao atualizar o documento.',
+            ]);
+        }
     }
 
     /**
@@ -94,11 +108,17 @@ class DocumentosController extends Controller
             File::delete(public_path('upload/'.$documento->assinatura));
         }
 
-        $documento->delete();
-
-        return response()->json([
-            'message'=>'Documento deletado com sucesso!!'
-        ]);
+        if($documento->delete()){
+            return response()->json([
+                'message'=>'Documento excluir com sucesso!!'
+            ]);
+        }
+        else {
+            return response()->json([
+                'error'=>'Ocorreu um erro ao excluir o documento'
+            ]);
+        }
+        
     }
 
     /**
